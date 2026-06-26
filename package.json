@@ -1,7 +1,7 @@
 {
   "name": "@irion/sdk",
   "version": "0.1.0",
-  "description": "Irion Buy-Now-Pay-Never SDK — private consumer-credit checkout on Stellar. Drop-in for any merchant / shopping site.",
+  "description": "Irion Buy-Now-Pay-Never SDK — private consumer-credit checkout on Canton. Drop-in for any merchant / shopping site.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -24,7 +24,7 @@
     "build": "tsup",
     "dev": "tsup --watch"
   },
-  "keywords": ["irion", "bnpl", "stellar", "soroban", "payments", "checkout", "buy-now-pay-never"],
+  "keywords": ["irion", "bnpl", "canton", "daml", "payments", "checkout", "buy-now-pay-never"],
   "peerDependencies": {
     "react": ">=18"
   },

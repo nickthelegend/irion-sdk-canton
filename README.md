@@ -1,7 +1,7 @@
 # @irion/sdk
 
 Drop-in **"Buy Now, Pay Never"** checkout for any merchant or shopping site —
-powered by Irion private consumer credit on Stellar. Like a payment-gateway SDK
+powered by Irion private consumer credit on Canton. Like a payment-gateway SDK
 (Stripe-style): create a checkout on your server with an API key, open it in the
 browser, get the result back.
 
@@ -76,8 +76,9 @@ import { PayWithIrion } from "@irion/sdk/react";
 
 The shopper picks **Pay Never** (over-collateralized BNPL: their collateral
 earns yield that auto-repays the purchase) or pays in full. Their credit is
-scored **privately** — income/debts never touch the chain. Settlement happens on
-Stellar; you get the `txHash` + `loanId` back.
+scored **privately** — income/debts stay in a private Daml contract that only the
+shopper and the operator can see, never the wider network. Settlement happens on
+Canton; you get the `txHash` + `loanId` back.
 
 ## Result shape (`postMessage` / callbacks)
 
@@ -86,7 +87,7 @@ interface PaymentResult {
   success: boolean;
   billHash?: string;
   loanId?: string;     // on-chain BNPL loan id
-  txHash?: string;     // Stellar settlement tx (view on stellar.expert)
+  txHash?: string;     // Canton settlement id (update id)
   txDigest?: string;   // @deprecated legacy alias for txHash (Sui era)
   paymentMode?: "bnpl" | "split3" | "full";
   error?: string;
