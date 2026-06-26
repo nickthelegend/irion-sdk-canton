@@ -1,27 +1,27 @@
-import type { XorrConfig, CreateCheckoutParams, Checkout, Bill } from "./types";
+import type { IrionConfig, CreateCheckoutParams, Checkout, Bill } from "./types";
 
-/** Hosted XORR gateway. Override via `baseUrl` for self-hosted / local dev. */
-const DEFAULT_BASE_URL = "https://pay.xorr.finance";
+/** Hosted Irion gateway. Override via `baseUrl` for self-hosted / local dev. */
+const DEFAULT_BASE_URL = "https://pay.irion.finance";
 
 /**
- * Server-side XORR client. Use it in your backend (API route, server action,
+ * Server-side Irion client. Use it in your backend (API route, server action,
  * serverless function) to create checkout sessions — NEVER expose
  * `clientSecret` to the browser.
  *
  * ```ts
- * const xorr = new XorrClient({ clientId: process.env.XORR_CLIENT_ID!, clientSecret: process.env.XORR_CLIENT_SECRET! });
- * const { checkoutUrl } = await xorr.createCheckout({ amount: 49.99, orderId: "cart_123" });
+ * const irion = new IrionClient({ clientId: process.env.IRION_CLIENT_ID!, clientSecret: process.env.IRION_CLIENT_SECRET! });
+ * const { checkoutUrl } = await irion.createCheckout({ amount: 49.99, orderId: "cart_123" });
  * ```
  */
-export class XorrClient {
+export class IrionClient {
   private readonly clientId: string;
   private readonly clientSecret: string;
   private readonly baseUrl: string;
   private readonly asset: string;
 
-  constructor(config: XorrConfig) {
+  constructor(config: IrionConfig) {
     if (!config?.clientId || !config?.clientSecret) {
-      throw new Error("XorrClient: `clientId` and `clientSecret` are required (get them from the XORR merchant dashboard).");
+      throw new Error("IrionClient: `clientId` and `clientSecret` are required (get them from the Irion merchant dashboard).");
     }
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
@@ -31,7 +31,7 @@ export class XorrClient {
 
   /** Create a BNPL checkout session. Returns a `checkoutUrl` to open/redirect the shopper to. */
   async createCheckout(params: CreateCheckoutParams): Promise<Checkout> {
-    if (!params?.amount || params.amount <= 0) throw new Error("XorrClient.createCheckout: `amount` must be > 0");
+    if (!params?.amount || params.amount <= 0) throw new Error("IrionClient.createCheckout: `amount` must be > 0");
     const res = await fetch(`${this.baseUrl}/api/bills/create`, {
       method: "POST",
       headers: {
@@ -48,7 +48,7 @@ export class XorrClient {
     });
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
-      throw new Error(`XORR createCheckout failed (${res.status}): ${detail || res.statusText}`);
+      throw new Error(`Irion createCheckout failed (${res.status}): ${detail || res.statusText}`);
     }
     return (await res.json()) as Checkout;
   }
@@ -56,7 +56,7 @@ export class XorrClient {
   /** Fetch the current state of a bill (e.g. to confirm payment server-side). */
   async getBill(billHash: string): Promise<Bill> {
     const res = await fetch(`${this.baseUrl}/api/bills/${billHash}`);
-    if (!res.ok) throw new Error(`XORR getBill failed (${res.status})`);
+    if (!res.ok) throw new Error(`Irion getBill failed (${res.status})`);
     return (await res.json()) as Bill;
   }
 
@@ -65,3 +65,6 @@ export class XorrClient {
     return `${this.baseUrl}/pay/${billHash}`;
   }
 }
+
+/** @deprecated Renamed to {@link IrionClient}. Kept for back-compat. */
+export const XorrClient = IrionClient;

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { P as PaymentResult } from './types-Ber6P2tR.js';
+import { P as PaymentResult } from './types-OKh31EY7.js';
 
-interface PayWithXorrProps {
-    /** A checkout URL already created server-side via `XorrClient.createCheckout`. */
+interface PayWithIrionProps {
+    /** A checkout URL already created server-side via `IrionClient.createCheckout`. */
     checkoutUrl?: string;
     /** Or a callback (usually hitting your own backend) that returns a fresh one. */
     createCheckout?: () => Promise<{
@@ -14,15 +14,19 @@ interface PayWithXorrProps {
     style?: React.CSSProperties;
     children?: React.ReactNode;
 }
+/** @deprecated Renamed to {@link PayWithIrionProps}. Kept for back-compat. */
+type PayWithXorrProps = PayWithIrionProps;
 /**
- * Drop-in "Buy Now, Pay Never with XORR" button. Pass a pre-created
+ * Drop-in "Buy Now, Pay Never with Irion" button. Pass a pre-created
  * `checkoutUrl` (recommended) or a `createCheckout` callback.
  *
  * ```tsx
- * <PayWithXorr createCheckout={() => fetch("/api/xorr-checkout", {method:"POST"}).then(r=>r.json())}
- *   onSuccess={(r) => router.push(`/success?tx=${r.txDigest}`)} />
+ * <PayWithIrion createCheckout={() => fetch("/api/irion-checkout", {method:"POST"}).then(r=>r.json())}
+ *   onSuccess={(r) => router.push(`/success?tx=${r.txHash}`)} />
  * ```
  */
-declare function PayWithXorr({ checkoutUrl, createCheckout, onSuccess, onError, className, style, children }: PayWithXorrProps): React.JSX.Element;
+declare function PayWithIrion({ checkoutUrl, createCheckout, onSuccess, onError, className, style, children }: PayWithIrionProps): React.JSX.Element;
+/** @deprecated Renamed to {@link PayWithIrion}. Kept for back-compat. */
+declare const PayWithXorr: typeof PayWithIrion;
 
-export { PayWithXorr, type PayWithXorrProps };
+export { PayWithIrion, type PayWithIrionProps, PayWithXorr, type PayWithXorrProps };

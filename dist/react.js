@@ -1,15 +1,15 @@
-import { openXorrCheckout } from './chunk-MIZTA242.js';
+import { openIrionCheckout } from './chunk-6Y4GUDXC.js';
 import * as React from 'react';
 import { jsx } from 'react/jsx-runtime';
 
-function PayWithXorr({ checkoutUrl, createCheckout, onSuccess, onError, className, style, children }) {
+function PayWithIrion({ checkoutUrl, createCheckout, onSuccess, onError, className, style, children }) {
   const [loading, setLoading] = React.useState(false);
   const handleClick = async () => {
     setLoading(true);
     try {
       const url = checkoutUrl ?? (await createCheckout?.())?.checkoutUrl;
-      if (!url) throw new Error("PayWithXorr: provide `checkoutUrl` or a `createCheckout` that returns one.");
-      openXorrCheckout(url, {
+      if (!url) throw new Error("PayWithIrion: provide `checkoutUrl` or a `createCheckout` that returns one.");
+      openIrionCheckout(url, {
         onSuccess: (r) => {
           setLoading(false);
           onSuccess?.(r);
@@ -25,7 +25,8 @@ function PayWithXorr({ checkoutUrl, createCheckout, onSuccess, onError, classNam
       onError?.({ success: false, error: e instanceof Error ? e.message : String(e) });
     }
   };
-  return /* @__PURE__ */ jsx("button", { type: "button", onClick: handleClick, disabled: loading, className, style, children: children ?? (loading ? "Opening XORR\u2026" : "Buy Now, Pay Never \u2014 with XORR") });
+  return /* @__PURE__ */ jsx("button", { type: "button", onClick: handleClick, disabled: loading, className, style, children: children ?? (loading ? "Opening Irion\u2026" : "Buy Now, Pay Never \u2014 with Irion") });
 }
+var PayWithXorr = PayWithIrion;
 
-export { PayWithXorr };
+export { PayWithIrion, PayWithXorr };

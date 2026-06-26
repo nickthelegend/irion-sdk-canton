@@ -1,17 +1,22 @@
-# @xorr/sdk
+# @irion/sdk
 
 Drop-in **"Buy Now, Pay Never"** checkout for any merchant or shopping site —
-powered by XORR private consumer credit on Sui. Like a payment-gateway SDK
+powered by Irion private consumer credit on Stellar. Like a payment-gateway SDK
 (Stripe-style): create a checkout on your server with an API key, open it in the
 browser, get the result back.
 
 ```bash
-npm install @xorr/sdk
+npm install @irion/sdk
 ```
+
+> Migrating from `@xorr/sdk`? The old names (`XorrClient`, `openXorrCheckout`,
+> `PayWithXorr`, `XorrConfig`) are still exported as deprecated aliases, and the
+> `txDigest` field is kept alongside the new `txHash`, so existing code keeps
+> working.
 
 ## 1. Get your API keys
 
-From the **XORR merchant dashboard** → your App → API credentials, copy:
+From the **Irion merchant dashboard** → your App → API credentials, copy:
 
 - `client_id`  → `x-client-id` (public)
 - `client_secret` → `x-client-secret` (**secret — server only**)
@@ -22,16 +27,16 @@ From the **XORR merchant dashboard** → your App → API credentials, copy:
 backend (API route / server action / serverless fn):
 
 ```ts
-import { XorrClient } from "@xorr/sdk";
+import { IrionClient } from "@irion/sdk";
 
-const xorr = new XorrClient({
-  clientId: process.env.XORR_CLIENT_ID!,
-  clientSecret: process.env.XORR_CLIENT_SECRET!,
+const irion = new IrionClient({
+  clientId: process.env.IRION_CLIENT_ID!,
+  clientSecret: process.env.IRION_CLIENT_SECRET!,
   // baseUrl: "http://localhost:3001", // self-hosted / local dev; omit for hosted gateway
 });
 
-// e.g. inside POST /api/xorr-checkout
-const { checkoutUrl, billHash } = await xorr.createCheckout({
+// e.g. inside POST /api/irion-checkout
+const { checkoutUrl, billHash } = await irion.createCheckout({
   amount: 49.99,          // in USDC
   orderId: "cart_8842",
   description: "Sneakers x1",
@@ -44,12 +49,12 @@ return Response.json({ checkoutUrl });
 ### Vanilla JS / any framework
 
 ```ts
-import { openXorrCheckout } from "@xorr/sdk";
+import { openIrionCheckout } from "@irion/sdk";
 
-const { checkoutUrl } = await fetch("/api/xorr-checkout", { method: "POST" }).then(r => r.json());
+const { checkoutUrl } = await fetch("/api/irion-checkout", { method: "POST" }).then(r => r.json());
 
-openXorrCheckout(checkoutUrl, {
-  onSuccess: (r) => console.log("paid!", r.txDigest, r.loanId),
+openIrionCheckout(checkoutUrl, {
+  onSuccess: (r) => console.log("paid!", r.txHash, r.loanId),
   onError:   (r) => console.warn("failed", r.error),
   onClose:   () => console.log("shopper closed checkout"),
   // redirect: true,  // full-page redirect instead of a popup
@@ -59,20 +64,20 @@ openXorrCheckout(checkoutUrl, {
 ### React
 
 ```tsx
-import { PayWithXorr } from "@xorr/sdk/react";
+import { PayWithIrion } from "@irion/sdk/react";
 
-<PayWithXorr
-  createCheckout={() => fetch("/api/xorr-checkout", { method: "POST" }).then(r => r.json())}
-  onSuccess={(r) => router.push(`/success?tx=${r.txDigest}`)}
+<PayWithIrion
+  createCheckout={() => fetch("/api/irion-checkout", { method: "POST" }).then(r => r.json())}
+  onSuccess={(r) => router.push(`/success?tx=${r.txHash}`)}
 />
 ```
 
 ## How payment works
 
 The shopper picks **Pay Never** (over-collateralized BNPL: their collateral
-earns DeepBook yield that auto-repays the purchase) or pays in full. Their
-credit is scored **privately inside a TEE** — income/debts never touch the
-chain. Settlement happens on Sui; you get the `txDigest` + `loanId` back.
+earns yield that auto-repays the purchase) or pays in full. Their credit is
+scored **privately** — income/debts never touch the chain. Settlement happens on
+Stellar; you get the `txHash` + `loanId` back.
 
 ## Result shape (`postMessage` / callbacks)
 
@@ -80,8 +85,9 @@ chain. Settlement happens on Sui; you get the `txDigest` + `loanId` back.
 interface PaymentResult {
   success: boolean;
   billHash?: string;
-  loanId?: string;     // on-chain BNPL loan object id
-  txDigest?: string;   // Sui settlement tx (view on suiscan.xyz)
+  loanId?: string;     // on-chain BNPL loan id
+  txHash?: string;     // Stellar settlement tx (view on stellar.expert)
+  txDigest?: string;   // @deprecated legacy alias for txHash (Sui era)
   paymentMode?: "bnpl" | "split3" | "full";
   error?: string;
 }
@@ -91,8 +97,8 @@ interface PaymentResult {
 
 | Export | Where | Purpose |
 |--------|-------|---------|
-| `new XorrClient(config)` | server | `createCheckout(params)`, `getBill(hash)`, `checkoutUrl(hash)` |
-| `openXorrCheckout(url, opts)` | browser | opens the checkout popup, resolves via callbacks |
-| `<PayWithXorr/>` (`@xorr/sdk/react`) | browser | prebuilt button |
+| `new IrionClient(config)` | server | `createCheckout(params)`, `getBill(hash)`, `checkoutUrl(hash)` |
+| `openIrionCheckout(url, opts)` | browser | opens the checkout popup, resolves via callbacks |
+| `<PayWithIrion/>` (`@irion/sdk/react`) | browser | prebuilt button |
 
 MIT.
