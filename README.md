@@ -1,4 +1,4 @@
-# @irion/sdk
+# @xorr-finance/irion-sdk
 
 Drop-in **"Buy Now, Pay Never"** checkout for any merchant or shopping site —
 powered by Irion private consumer credit on Canton. Like a payment-gateway SDK
@@ -6,7 +6,7 @@ powered by Irion private consumer credit on Canton. Like a payment-gateway SDK
 browser, get the result back.
 
 ```bash
-npm install @irion/sdk
+npm install @xorr-finance/irion-sdk
 ```
 
 > Migrating from `@xorr/sdk`? The old names (`XorrClient`, `openXorrCheckout`,
@@ -27,7 +27,7 @@ From the **Irion merchant dashboard** → your App → API credentials, copy:
 backend (API route / server action / serverless fn):
 
 ```ts
-import { IrionClient } from "@irion/sdk";
+import { IrionClient } from "@xorr-finance/irion-sdk";
 
 const irion = new IrionClient({
   clientId: process.env.IRION_CLIENT_ID!,
@@ -49,7 +49,7 @@ return Response.json({ checkoutUrl });
 ### Vanilla JS / any framework
 
 ```ts
-import { openIrionCheckout } from "@irion/sdk";
+import { openIrionCheckout } from "@xorr-finance/irion-sdk";
 
 const { checkoutUrl } = await fetch("/api/irion-checkout", { method: "POST" }).then(r => r.json());
 
@@ -64,7 +64,7 @@ openIrionCheckout(checkoutUrl, {
 ### React
 
 ```tsx
-import { PayWithIrion } from "@irion/sdk/react";
+import { PayWithIrion } from "@xorr-finance/irion-sdk/react";
 
 <PayWithIrion
   createCheckout={() => fetch("/api/irion-checkout", { method: "POST" }).then(r => r.json())}
@@ -100,6 +100,6 @@ interface PaymentResult {
 |--------|-------|---------|
 | `new IrionClient(config)` | server | `createCheckout(params)`, `getBill(hash)`, `checkoutUrl(hash)` |
 | `openIrionCheckout(url, opts)` | browser | opens the checkout popup, resolves via callbacks |
-| `<PayWithIrion/>` (`@irion/sdk/react`) | browser | prebuilt button |
+| `<PayWithIrion/>` (`@xorr-finance/irion-sdk/react`) | browser | prebuilt button |
 
 MIT.

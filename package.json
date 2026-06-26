@@ -1,8 +1,11 @@
 {
-  "name": "@irion/sdk",
+  "name": "@xorr-finance/irion-sdk",
   "version": "0.1.0",
   "description": "Irion Buy-Now-Pay-Never SDK — private consumer-credit checkout on Canton. Drop-in for any merchant / shopping site.",
   "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/nickthelegend/irion-sdk-canton.git" },
+  "homepage": "https://github.com/nickthelegend/irion-sdk-canton#readme",
+  "publishConfig": { "access": "public" },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

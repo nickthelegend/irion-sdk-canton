@@ -1,5 +1,5 @@
-import { I as IrionConfig, C as CreateCheckoutParams, a as Checkout, B as Bill, P as PaymentResult } from './types-OKh31EY7.cjs';
-export { X as XorrConfig } from './types-OKh31EY7.cjs';
+import { I as IrionConfig, C as CreateCheckoutParams, a as Checkout, B as Bill, P as PaymentResult } from './types-Bk6JSyrl.cjs';
+export { X as XorrConfig } from './types-Bk6JSyrl.cjs';
 
 /**
  * Server-side Irion client. Use it in your backend (API route, server action,

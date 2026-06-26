@@ -49,7 +49,7 @@ interface PaymentResult {
     billHash?: string;
     /** On-chain BNPL loan id (if the shopper chose Pay-Never / BNPL). */
     loanId?: string;
-    /** Stellar transaction hash of the settlement. */
+    /** Canton settlement id (update id) of the on-ledger transaction. */
     txHash?: string;
     /** @deprecated Use {@link PaymentResult.txHash}. Legacy alias from the Sui era. */
     txDigest?: string;

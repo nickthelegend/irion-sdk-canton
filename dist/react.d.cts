@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { P as PaymentResult } from './types-OKh31EY7.cjs';
+import { P as PaymentResult } from './types-Bk6JSyrl.cjs';
 
 interface PayWithIrionProps {
     /** A checkout URL already created server-side via `IrionClient.createCheckout`. */
