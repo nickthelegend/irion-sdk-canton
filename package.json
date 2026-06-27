@@ -25,7 +25,8 @@
   "files": ["dist", "README.md"],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "node --import tsx --test src/*.test.ts"
   },
   "keywords": ["irion", "bnpl", "canton", "daml", "payments", "checkout", "buy-now-pay-never"],
   "peerDependencies": {
@@ -38,6 +39,7 @@
     "@types/react": "^18.3.0",
     "react": "^18.3.0",
     "tsup": "^8.3.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.0"
   }
 }
